@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+    clickhouse-server:
+        container_name: clickhouse-server-benchmarking
+        environment:
+            - CLICKHOUSE_DB=glovo
+            - CLICKHOUSE_USER=glovo
+            - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+            - CLICKHOUSE_PASSWORD=glovo
+        ulimits:
+            nofile:
+                soft: 262144
+                hard: 262144
+        ports:
+            - 18123:8123
+            - 19000:9000
+        volumes:
+            - ./data/ch/ch_data:/var/lib/clickhouse/
+            - ./data/ch/ch_logs:/var/log/clickhouse-server/
+        image: clickhouse/clickhouse-server:22.6.4.35
