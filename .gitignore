@@ -1,2 +1,3 @@
-data/ch/ch_data/**/*
-data/ch/ch_logs/**/*
+data/ch/ch_data/**
+data/ch/ch_logs/**
+data/mysql/**

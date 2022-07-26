@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+    mysql-server:
+        container_name: mysql-server-benchmarking
+        environment:
+            - MYSQL_DATABASE=glovo
+            - MYSQL_USER=glovo
+            - MYSQL_PASSWORD=glovo
+            - MYSQL_ROOT_PASSWORD=glovo
+        ports:
+            - 33060:3306
+        volumes:
+            - ./data/mysql:/var/lib/mysql/
+        image: mysql:5.7.38
