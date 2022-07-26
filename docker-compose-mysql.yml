@@ -11,4 +11,13 @@ services:
             - 33060:3306
         volumes:
             - ./data/mysql:/var/lib/mysql/
+            - ./mysql-init.sql:/data/application/init.sql
         image: mysql:5.7.38
+        deploy:
+            resources:
+                limits:
+                    cpus: 4
+                    memory: 8192M
+                reservations:
+                    cpus: 4
+                    memory: 8192M

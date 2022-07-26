@@ -18,3 +18,11 @@ services:
             - ./data/ch/ch_data:/var/lib/clickhouse/
             - ./data/ch/ch_logs:/var/log/clickhouse-server/
         image: clickhouse/clickhouse-server:22.6.4.35
+        deploy:
+            resources:
+                limits:
+                    cpus: 4
+                    memory: 8192M
+                reservations:
+                    cpus: 4
+                    memory: 8192M
