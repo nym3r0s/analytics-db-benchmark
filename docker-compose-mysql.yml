@@ -11,7 +11,7 @@ services:
             - 33060:3306
         volumes:
             - ./data/mysql:/var/lib/mysql/
-            - ./mysql-init.sql:/data/application/init.sql
+            - ./schema/mysql:/docker-entrypoint-initdb.d
         image: mysql:5.7.38
         deploy:
             resources:
