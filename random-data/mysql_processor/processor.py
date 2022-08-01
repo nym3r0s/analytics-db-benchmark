@@ -3,6 +3,7 @@ from datetime import date, datetime, timedelta
 import mysql_processor.queries as queries
 from dateutil import parser
 import numpy as np
+import pandas as pd
 
 
 def _toMySQLDateTime(isoDate):
@@ -18,30 +19,52 @@ def _listToCSV(data):
 
 
 def _createOrderData(hit):
-    return (
+    return {
+        "store_id":
         hit.get('storeId'),
+        "store_address_id":
         hit.get('storeAddressId'),
+        "order_id":
         hit.get('orderId'),
+        "dispatching_time":
         _toMySQLDateTime(hit.get('dispatchingTime')),
+        "acceptance_time":
         _toMySQLDateTime(hit.get('acceptanceTime')),
+        "cancel_reason":
         hit.get('cancelReason'),
+        "courier_waiting_time_in_seconds":
         hit.get('courierWaitingTimeInSeconds'),
+        "creation_time":
         _toMySQLDateTime(hit.get('creationTime')),
+        "currency":
         hit.get('currency'),
+        "feedback_id":
         hit.get('feedbackId'),
+        "feedback_ids":
         _listToCSV(hit.get('feedbackIds')),
+        "is_positive_rating":
         hit.get('isPositiveRating'),
+        "is_refunded":
         hit.get('isRefunded'),
+        "order_preparation_time_in_seconds":
         hit.get('orderPreparationTimeInSeconds'),
+        "partner_rating_evaluation":
         hit.get('partnerRatingEvaluation'),
+        "partner_rating_reasons":
         _listToCSV(hit.get('partnerRatingReasons')),
+        "pick_up_time":
         _toMySQLDateTime(hit.get('pickUpTime')),
+        "refunded_amount_in_cents":
         hit.get('refundedAmountInCents'),
+        "serving_time":
         _toMySQLDateTime(hit.get('servingTime')),
+        "status":
         hit.get('status'),
+        "total_product_price_in_cents":
         hit.get('totalProductPriceInCents'),
+        "total_products_price_in_cents":
         hit.get('totalProductsPriceInCents')
-    )
+    }
 
 
 def _createBoughtProductsData(hit):
@@ -49,22 +72,21 @@ def _createBoughtProductsData(hit):
     storeAddressId = hit.get("storeAddressId")
     orderId = hit.get("orderId")
     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
-    products = []
+
     if hit.get("boughtProducts") is not None:
         for product in hit['boughtProducts']:
-            products.append((
-                storeId,
-                storeAddressId,
-                orderId,
-                dispatchingTime,
-                product.get("boughtProductId"),
-                product.get("externalId"),
-                product.get("name"),
-                product.get("price"),
-                product.get("productId"),
-                product.get("quantity")
-            ))
-    return products
+            yield {
+                "store_id": storeId,
+                "store_address_id": storeAddressId,
+                "order_id": orderId,
+                "dispatching_time": dispatchingTime,
+                "bought_product_id": product.get("boughtProductId"),
+                "external_id": product.get("externalId"),
+                "name": product.get("name"),
+                "price": product.get("price"),
+                "product_id": product.get("productId"),
+                "quantity": product.get("quantity")
+            }
 
 
 def _createCustomizationsData(hit):
@@ -72,25 +94,23 @@ def _createCustomizationsData(hit):
     storeAddressId = hit.get("storeAddressId")
     orderId = hit.get("orderId")
     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
-    ret = []
     for product in hit['boughtProducts']:
         if product.get("customizations") is not None:
             customizations = product.get("customizations")
             boughtProductId = product.get("boughtProductId")
             for customization in customizations:
-                ret.append( (
-                    storeId,
-                    storeAddressId,
-                    orderId,
-                    dispatchingTime,
-                    boughtProductId,
-                    customization.get("attributeId"),
-                    customization.get("externalId"),
-                    customization.get("name"),
-                    customization.get("priceImpact"),
-                    customization.get("quantity"),
-                ))
-    return ret
+                yield {
+                    "store_id": storeId,
+                    "store_address_id": storeAddressId,
+                    "order_id": orderId,
+                    "dispatching_time": dispatchingTime,
+                    "bought_product_id": boughtProductId,
+                    "attribute_id": customization.get("attributeId"),
+                    "external_id": customization.get("externalId"),
+                    "name": customization.get("name"),
+                    "price_impact": customization.get("priceImpact"),
+                    "quantity": customization.get("quantity"),
+                }
 
 
 def _createProductIssues(hit):
@@ -98,24 +118,120 @@ def _createProductIssues(hit):
     storeAddressId = hit.get("storeAddressId")
     orderId = hit.get("orderId")
     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
-    ret = []
     if hit.get("productIssues") is not None:
         productIssues = hit.get("productIssues")
         for issue in productIssues:
             optionId = issue.get("optionId")
             for product in issue.get("affectedProducts"):
-                ret.append( (
-                    storeId,
-                    storeAddressId,
-                    orderId,
-                    dispatchingTime,
-                    optionId,
-                    product.get("boughtProductId"),
-                    product.get("externalId"),
-                    product.get("name"),
-                    product.get("quantity")
-                ))
-    return ret
+                yield {
+                    "store_id": storeId,
+                    "store_address_id": storeAddressId,
+                    "order_id": orderId,
+                    "dispatching_time": dispatchingTime,
+                    "option_id": optionId,
+                    "bought_product_id": product.get("boughtProductId"),
+                    "external_id": product.get("externalId"),
+                    "name": product.get("name"),
+                    "quantity": product.get("quantity")
+                }
+
+
+# def _createOrderData(hit):
+#     return (
+#         hit.get('storeId'),
+#         hit.get('storeAddressId'),
+#         hit.get('orderId'),
+#         _toMySQLDateTime(hit.get('dispatchingTime')),
+#         _toMySQLDateTime(hit.get('acceptanceTime')),
+#         hit.get('cancelReason'),
+#         hit.get('courierWaitingTimeInSeconds'),
+#         _toMySQLDateTime(hit.get('creationTime')),
+#         hit.get('currency'),
+#         hit.get('feedbackId'),
+#         _listToCSV(hit.get('feedbackIds')),
+#         hit.get('isPositiveRating'),
+#         hit.get('isRefunded'),
+#         hit.get('orderPreparationTimeInSeconds'),
+#         hit.get('partnerRatingEvaluation'),
+#         _listToCSV(hit.get('partnerRatingReasons')),
+#         _toMySQLDateTime(hit.get('pickUpTime')),
+#         hit.get('refundedAmountInCents'),
+#         _toMySQLDateTime(hit.get('servingTime')),
+#         hit.get('status'),
+#         hit.get('totalProductPriceInCents'),
+#         hit.get('totalProductsPriceInCents')
+#     )
+
+# def _createBoughtProductsData(hit):
+#     storeId = hit.get("storeId")
+#     storeAddressId = hit.get("storeAddressId")
+#     orderId = hit.get("orderId")
+#     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
+#     products = []
+#     if hit.get("boughtProducts") is not None:
+#         for product in hit['boughtProducts']:
+#             products.append((
+#                 storeId,
+#                 storeAddressId,
+#                 orderId,
+#                 dispatchingTime,
+#                 product.get("boughtProductId"),
+#                 product.get("externalId"),
+#                 product.get("name"),
+#                 product.get("price"),
+#                 product.get("productId"),
+#                 product.get("quantity")
+#             ))
+#     return products
+
+# def _createCustomizationsData(hit):
+#     storeId = hit.get("storeId")
+#     storeAddressId = hit.get("storeAddressId")
+#     orderId = hit.get("orderId")
+#     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
+#     ret = []
+#     for product in hit['boughtProducts']:
+#         if product.get("customizations") is not None:
+#             customizations = product.get("customizations")
+#             boughtProductId = product.get("boughtProductId")
+#             for customization in customizations:
+#                 ret.append( (
+#                     storeId,
+#                     storeAddressId,
+#                     orderId,
+#                     dispatchingTime,
+#                     boughtProductId,
+#                     customization.get("attributeId"),
+#                     customization.get("externalId"),
+#                     customization.get("name"),
+#                     customization.get("priceImpact"),
+#                     customization.get("quantity"),
+#                 ))
+#     return ret
+
+# def _createProductIssues(hit):
+#     storeId = hit.get("storeId")
+#     storeAddressId = hit.get("storeAddressId")
+#     orderId = hit.get("orderId")
+#     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
+#     ret = []
+#     if hit.get("productIssues") is not None:
+#         productIssues = hit.get("productIssues")
+#         for issue in productIssues:
+#             optionId = issue.get("optionId")
+#             for product in issue.get("affectedProducts"):
+#                 ret.append( (
+#                     storeId,
+#                     storeAddressId,
+#                     orderId,
+#                     dispatchingTime,
+#                     optionId,
+#                     product.get("boughtProductId"),
+#                     product.get("externalId"),
+#                     product.get("name"),
+#                     product.get("quantity")
+#                 ))
+#     return ret
 
 
 def processOrderBulk(mysql_client, hits):
@@ -157,50 +273,34 @@ def processOrder(mysql_client, hit):
         print(e)
         print(data_order)
 
-def bulk(mysql_client, hits):
-    cursor = mysql_client.cursor()
+
+def bulk(engine, hits):
     orders = []
     bought_products = []
     customizations = []
     product_issues = []
     print("transforming orders")
-    for hit in hits: 
+    for hit in hits:
         orders.append(_createOrderData(hit))
         bought_products.extend(_createBoughtProductsData(hit))
         customizations.extend(_createCustomizationsData(hit))
         product_issues.extend(_createProductIssues(hit))
-
-    # try:
-    print("inserting {} orders".format(len(orders)))
-    cursor.executemany(queries.orders_sql, orders)
-    mysql_client.commit()
-
-    #print ("==================== bought products")
-    # for bought_product in bought_products:
-    #     print(bought_product)
-    print("inserting {} bought_products".format(len(bought_products)))
-    for i in range(0, len(bought_products), 100):
-        chunk = bought_products[i:i + 100]
-        cursor.executemany(queries.bought_products_sql, chunk)
-        mysql_client.commit()
-
-    # print ("==================== customizations")
-    # for customization in customizations:
-        # print(customization)
-    print("inserting {} customizations".format(len(customizations)))
-    for i in range(0, len(customizations), 500):
-        chunk = customizations[i:i + 500]
-        cursor.executemany(queries.customizations_sql, chunk)
-        mysql_client.commit()
-
-    # print ("==================== product issues")
-    # for product_issue in product_issues:
-        # print(product_issue)
-    print("inserting {} product_issues".format(len(product_issues)))
-    for i in range(0, len(product_issues), 500):
-        chunk = product_issues[i:i + 500]
-        cursor.executemany(queries.product_issues_sql, chunk)
-        mysql_client.commit()
-    # except Exception as e:
-    #     print(e)
-    #     print(orders)
+    orders_df = pd.DataFrame.from_dict(orders)
+    bought_products_df = pd.DataFrame.from_dict(bought_products)
+    customizations_df = pd.DataFrame.from_dict(customizations)
+    product_issues_df = pd.DataFrame.from_dict(product_issues)
+    # print(orders_df)
+    # input()
+    orders_df.to_sql('orders', con=engine, index=False, if_exists='append')
+    bought_products_df.to_sql('bought_products',
+                              con=engine,
+                              index=False,
+                              if_exists='append')
+    customizations_df.to_sql('customizations',
+                             con=engine,
+                             index=False,
+                             if_exists='append')
+    product_issues_df.to_sql('product_issues',
+                             con=engine,
+                             index=False,
+                             if_exists='append')
