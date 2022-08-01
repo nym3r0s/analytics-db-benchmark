@@ -1,0 +1,170 @@
+{
+    "properties": {
+        "_class": {
+            "type": "text",
+            "index": false
+        },
+        "acceptanceTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        },
+        "boughtProducts": {
+            "type": "nested",
+            "properties": {
+                "boughtProductId": {
+                    "type": "long",
+                    "index": false
+                },
+                "customizations": {
+                    "type": "nested",
+                    "properties": {
+                        "attributeId": {
+                            "type": "long",
+                            "index": false
+                        },
+                        "externalId": {
+                            "type": "keyword",
+                            "index": false
+                        },
+                        "name": {
+                            "type": "keyword",
+                            "index": false
+                        },
+                        "priceImpact": {
+                            "type": "integer",
+                            "index": false
+                        },
+                        "quantity": {
+                            "type": "integer",
+                            "index": false
+                        }
+                    }
+                },
+                "externalId": {
+                    "type": "keyword",
+                    "index": false
+                },
+                "name": {
+                    "type": "keyword",
+                    "index": false
+                },
+                "price": {
+                    "type": "integer",
+                    "index": false
+                },
+                "productId": {
+                    "type": "long",
+                    "index": false
+                },
+                "quantity": {
+                    "type": "integer",
+                    "index": false
+                }
+            }
+        },
+        "cancelReason": {
+            "type": "keyword",
+            "index": false
+        },
+        "courierWaitingTimeInSeconds": {
+            "type": "long",
+            "index": false
+        },
+        "creationTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        },
+        "currency": {
+            "type": "keyword",
+            "index": false
+        },
+        "dispatchingTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        },
+        "feedbackId": {
+            "type": "long"
+        },
+        "feedbackIds": {
+            "type": "long"
+        },
+        "isPositiveRating": {
+            "type": "boolean"
+        },
+        "isRefunded": {
+            "type": "boolean"
+        },
+        "orderId": {
+            "type": "long"
+        },
+        "orderPreparationTimeInSeconds": {
+            "type": "long",
+            "index": false
+        },
+        "partnerRatingEvaluation": {
+            "type": "keyword"
+        },
+        "partnerRatingReasons": {
+            "type": "keyword",
+            "index": false
+        },
+        "pickUpTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        },
+        "productIssues": {
+            "type": "nested",
+            "properties": {
+                "affectedProducts": {
+                    "type": "nested",
+                    "properties": {
+                        "boughtProductId": {
+                            "type": "long",
+                            "index": false
+                        },
+                        "externalId": {
+                            "type": "keyword",
+                            "index": false
+                        },
+                        "name": {
+                            "type": "keyword",
+                            "index": false
+                        },
+                        "quantity": {
+                            "type": "integer",
+                            "index": false
+                        }
+                    }
+                },
+                "optionId": {
+                    "type": "keyword",
+                    "index": false
+                }
+            }
+        },
+        "refundedAmountInCents": {
+            "type": "integer",
+            "index": false
+        },
+        "servingTime": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        },
+        "status": {
+            "type": "keyword"
+        },
+        "storeAddressId": {
+            "type": "long"
+        },
+        "storeId": {
+            "type": "long"
+        },
+        "totalProductPriceInCents": {
+            "type": "long"
+        },
+        "totalProductsPriceInCents": {
+            "type": "integer",
+            "index": false
+        }
+    }
+}

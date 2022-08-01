@@ -1,0 +1,132 @@
+orders_sql = ('''
+INSERT INTO glgit stovo.orders
+(
+    store_id, 
+    store_address_id, 
+    order_id, 
+    dispatching_time,
+    acceptance_time,
+    cancel_reason,
+    courier_waiting_time_in_seconds,
+    creation_time,
+    currency,
+    feedback_id,
+    feedback_ids,
+    is_positive_rating,
+    is_refunded,
+    order_preparation_time_in_seconds,
+    partner_rating_evaluation,
+    partner_rating_reasons,
+    pick_up_time,
+    refunded_amount_in_cents,
+    serving_time,
+    status,
+    total_product_price_in_cents,
+    total_products_price_in_cents
+ )
+VALUES(
+    %s, 
+    %s, 
+    %s, 
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s);
+''')
+
+bought_products_sql = '''
+INSERT INTO glovo.bought_products
+(
+    store_id,
+    store_address_id,
+    order_id,
+    dispatching_time,
+    bought_product_id,
+    external_id,
+    name,
+    price,
+    product_id,
+    quantity
+)
+VALUES(
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s
+);
+'''
+
+customizations_sql = '''
+INSERT INTO glovo.customizations
+(
+    store_id,
+    store_address_id,
+    order_id,
+    dispatching_time,
+    bought_product_id,
+    attribute_id,
+    external_id,
+    name,
+    price_impact,
+    quantity
+)
+VALUES(
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s
+);
+'''
+
+product_issues_sql = '''
+INSERT INTO glovo.product_issues
+(
+    store_id,
+    store_address_id,
+    order_id,
+    dispatching_time,
+    option_id,
+    bought_product_id,
+    external_id,
+    name,
+    quantity
+)
+VALUES(
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s,
+    %s
+);
+'''
