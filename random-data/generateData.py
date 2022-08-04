@@ -3,12 +3,13 @@ from dis import dis
 import random
 from faker import Faker
 from faker_food import FoodProvider
+import datetime
 
 fake = Faker()
 fake.add_provider(FoodProvider)
 
 def _randomDate():
-    return fake.date_time_this_month().isoformat()
+    return fake.date_time_between_dates(datetime_start=datetime.datetime(2022,7,1,0,0,0)).isoformat()
 
 cancel_reasons = ['PARTNER', 'CUSTOMER', 'GLOVO']
 partner_rating_reasons = [fake.word() for i in range(10)]
