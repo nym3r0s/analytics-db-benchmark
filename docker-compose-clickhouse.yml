@@ -17,7 +17,7 @@ services:
         volumes:
             - ./data/ch/ch_data:/var/lib/clickhouse/
             - ./data/ch/ch_logs:/var/log/clickhouse-server/
-        image: clickhouse/clickhouse-server:22.6.4.35
+        image: clickhouse/clickhouse-server:22.6.5.22
         deploy:
             resources:
                 limits:
