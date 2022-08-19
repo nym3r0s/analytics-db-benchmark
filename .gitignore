@@ -4,3 +4,4 @@ data/ch/ch_logs/**
 data/mysql/**
 data/es/**
 __pycache__/
+*.tsv
