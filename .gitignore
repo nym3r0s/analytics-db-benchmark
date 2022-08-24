@@ -5,3 +5,4 @@ data/mysql/**
 data/es/**
 __pycache__/
 *.tsv
+.vscode
