@@ -31,11 +31,8 @@ with ThreadPoolExecutor(1000) as executor:
                 buffer.append(gd.createOrder(storeId, addressId))
                 if i % 2000 == 0:
                     executor.submit(mysql_processor.bulk, engine, buffer.copy())
-                    # mysql_processor.bulk(engine, buffer)
                     buffer = []
             print("Completed generating orders")
-                # if(len(buffer) % 1000 == 0):
-                #     executor.submit(mysql_processor.processOrderBulk, mysql_client, [b for b in buffer])
 
 cursor.close()
 mysql_client.close()

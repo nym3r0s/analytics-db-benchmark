@@ -21,49 +21,49 @@ def _listToCSV(data):
 def _createOrderData(hit):
     return {
         "store_id":
-        hit.get('storeId'),
+            hit.get('storeId'),
         "store_address_id":
-        hit.get('storeAddressId'),
+            hit.get('storeAddressId'),
         "order_id":
-        hit.get('orderId'),
+            hit.get('orderId'),
         "dispatching_time":
-        _toMySQLDateTime(hit.get('dispatchingTime')),
+            _toMySQLDateTime(hit.get('dispatchingTime')),
         "acceptance_time":
-        _toMySQLDateTime(hit.get('acceptanceTime')),
+            _toMySQLDateTime(hit.get('acceptanceTime')),
         "cancel_reason":
-        hit.get('cancelReason'),
+            hit.get('cancelReason'),
         "courier_waiting_time_in_seconds":
-        hit.get('courierWaitingTimeInSeconds'),
+            hit.get('courierWaitingTimeInSeconds'),
         "creation_time":
-        _toMySQLDateTime(hit.get('creationTime')),
+            _toMySQLDateTime(hit.get('creationTime')),
         "currency":
-        hit.get('currency'),
+            hit.get('currency'),
         "feedback_id":
-        hit.get('feedbackId'),
+            hit.get('feedbackId'),
         "feedback_ids":
-        _listToCSV(hit.get('feedbackIds')),
+            _listToCSV(hit.get('feedbackIds')),
         "is_positive_rating":
-        hit.get('isPositiveRating'),
+            hit.get('isPositiveRating'),
         "is_refunded":
-        hit.get('isRefunded'),
+            hit.get('isRefunded'),
         "order_preparation_time_in_seconds":
-        hit.get('orderPreparationTimeInSeconds'),
+            hit.get('orderPreparationTimeInSeconds'),
         "partner_rating_evaluation":
-        hit.get('partnerRatingEvaluation'),
+            hit.get('partnerRatingEvaluation'),
         "partner_rating_reasons":
-        _listToCSV(hit.get('partnerRatingReasons')),
+            _listToCSV(hit.get('partnerRatingReasons')),
         "pick_up_time":
-        _toMySQLDateTime(hit.get('pickUpTime')),
+            _toMySQLDateTime(hit.get('pickUpTime')),
         "refunded_amount_in_cents":
-        hit.get('refundedAmountInCents'),
+            hit.get('refundedAmountInCents'),
         "serving_time":
-        _toMySQLDateTime(hit.get('servingTime')),
+            _toMySQLDateTime(hit.get('servingTime')),
         "status":
-        hit.get('status'),
+            hit.get('status'),
         "total_product_price_in_cents":
-        hit.get('totalProductPriceInCents'),
+            hit.get('totalProductPriceInCents'),
         "total_products_price_in_cents":
-        hit.get('totalProductsPriceInCents')
+            hit.get('totalProductsPriceInCents')
     }
 
 
@@ -136,104 +136,6 @@ def _createProductIssues(hit):
                 }
 
 
-# def _createOrderData(hit):
-#     return (
-#         hit.get('storeId'),
-#         hit.get('storeAddressId'),
-#         hit.get('orderId'),
-#         _toMySQLDateTime(hit.get('dispatchingTime')),
-#         _toMySQLDateTime(hit.get('acceptanceTime')),
-#         hit.get('cancelReason'),
-#         hit.get('courierWaitingTimeInSeconds'),
-#         _toMySQLDateTime(hit.get('creationTime')),
-#         hit.get('currency'),
-#         hit.get('feedbackId'),
-#         _listToCSV(hit.get('feedbackIds')),
-#         hit.get('isPositiveRating'),
-#         hit.get('isRefunded'),
-#         hit.get('orderPreparationTimeInSeconds'),
-#         hit.get('partnerRatingEvaluation'),
-#         _listToCSV(hit.get('partnerRatingReasons')),
-#         _toMySQLDateTime(hit.get('pickUpTime')),
-#         hit.get('refundedAmountInCents'),
-#         _toMySQLDateTime(hit.get('servingTime')),
-#         hit.get('status'),
-#         hit.get('totalProductPriceInCents'),
-#         hit.get('totalProductsPriceInCents')
-#     )
-
-# def _createBoughtProductsData(hit):
-#     storeId = hit.get("storeId")
-#     storeAddressId = hit.get("storeAddressId")
-#     orderId = hit.get("orderId")
-#     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
-#     products = []
-#     if hit.get("boughtProducts") is not None:
-#         for product in hit['boughtProducts']:
-#             products.append((
-#                 storeId,
-#                 storeAddressId,
-#                 orderId,
-#                 dispatchingTime,
-#                 product.get("boughtProductId"),
-#                 product.get("externalId"),
-#                 product.get("name"),
-#                 product.get("price"),
-#                 product.get("productId"),
-#                 product.get("quantity")
-#             ))
-#     return products
-
-# def _createCustomizationsData(hit):
-#     storeId = hit.get("storeId")
-#     storeAddressId = hit.get("storeAddressId")
-#     orderId = hit.get("orderId")
-#     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
-#     ret = []
-#     for product in hit['boughtProducts']:
-#         if product.get("customizations") is not None:
-#             customizations = product.get("customizations")
-#             boughtProductId = product.get("boughtProductId")
-#             for customization in customizations:
-#                 ret.append( (
-#                     storeId,
-#                     storeAddressId,
-#                     orderId,
-#                     dispatchingTime,
-#                     boughtProductId,
-#                     customization.get("attributeId"),
-#                     customization.get("externalId"),
-#                     customization.get("name"),
-#                     customization.get("priceImpact"),
-#                     customization.get("quantity"),
-#                 ))
-#     return ret
-
-# def _createProductIssues(hit):
-#     storeId = hit.get("storeId")
-#     storeAddressId = hit.get("storeAddressId")
-#     orderId = hit.get("orderId")
-#     dispatchingTime = _toMySQLDateTime(hit.get("dispatchingTime"))
-#     ret = []
-#     if hit.get("productIssues") is not None:
-#         productIssues = hit.get("productIssues")
-#         for issue in productIssues:
-#             optionId = issue.get("optionId")
-#             for product in issue.get("affectedProducts"):
-#                 ret.append( (
-#                     storeId,
-#                     storeAddressId,
-#                     orderId,
-#                     dispatchingTime,
-#                     optionId,
-#                     product.get("boughtProductId"),
-#                     product.get("externalId"),
-#                     product.get("name"),
-#                     product.get("quantity")
-#                 ))
-#     return ret
-
-
 def processOrderBulk(mysql_client, hits):
     i = 1
     for hit in hits:
@@ -254,7 +156,7 @@ def processOrder(mysql_client, hit):
     try:
         cursor.execute(queries.orders_sql, data_order)
 
-        #print ("==================== bought products")
+        # print ("==================== bought products")
         for bought_product in bought_products:
             # print(bought_product)
             cursor.execute(queries.bought_products_sql, bought_product)
@@ -285,12 +187,11 @@ def bulk(engine, hits):
         bought_products.extend(_createBoughtProductsData(hit))
         customizations.extend(_createCustomizationsData(hit))
         product_issues.extend(_createProductIssues(hit))
+
     orders_df = pd.DataFrame.from_dict(orders)
     bought_products_df = pd.DataFrame.from_dict(bought_products)
     customizations_df = pd.DataFrame.from_dict(customizations)
     product_issues_df = pd.DataFrame.from_dict(product_issues)
-    # print(orders_df)
-    # input()
     orders_df.to_sql('orders', con=engine, index=False, if_exists='append')
     bought_products_df.to_sql('bought_products',
                               con=engine,
