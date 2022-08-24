@@ -7,6 +7,11 @@ A comparison between different databases for reporting and analytics use-cases
 * MySQL
 * Clickhouse
 
+### Random Data
+
+* Use the `random-data/populatemysql.py` script to populate the MySQL DB with random data.
+* Once MySQL is populated with enough data, export the data and import it into Clickhouse
+
 ### Useful commands
 
 ```shell
