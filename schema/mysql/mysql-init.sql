@@ -59,3 +59,11 @@ CREATE TABLE product_issues (
     `name` VARCHAR(255),
     `quantity` BIGINT
 );
+-- Indexes
+alter table orders add index `address_id_time_price` (store_address_id, dispatching_time, total_product_price_in_cents);
+alter table orders add index `address_id_time_prep_time` (store_address_id, dispatching_time, order_preparation_time_in_seconds);
+alter table product_issues  add index `address_id_time_option_id` (store_address_id, dispatching_time, option_id);
+alter table bought_products  add index `address_id_time_name` (store_address_id, dispatching_time, name);
+alter table orders add index `address_id_time_rating` (store_address_id, dispatching_time, is_positive_rating);
+alter table orders add index `address_id_time_status` (store_address_id, dispatching_time, status);
+alter table customizations  add index `address_id_time_name` (store_address_id, dispatching_time, name);
